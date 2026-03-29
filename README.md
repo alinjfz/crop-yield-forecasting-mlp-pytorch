@@ -179,7 +179,7 @@ Samples from 2019 receive weight ≈ 1.0; samples from 2010 receive weight ≈ 0
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/alinajafzadeh/crop-yield-forecasting-mlp-pytorch.git
+git clone https://github.com/alinjfz/crop-yield-forecasting-mlp-pytorch.git
 cd crop-yield-forecasting-mlp-pytorch
 ```
 
@@ -253,7 +253,7 @@ crop-yield-forecasting-mlp-pytorch/
 
 **Ali Najafzadeh**
 AI Graduate | Former Full-Stack Developer
-[GitHub](https://github.com/alinajafzadeh) · [LinkedIn](https://linkedin.com/in/alinajafzadeh)
+[GitHub](https://github.com/alinjfz) · [LinkedIn](https://linkedin.com/in/alinajafzadeh)
 
 ---
 
