@@ -41,11 +41,15 @@
 
 ---
 
-## Training Curve
+## Training Curves
 
 The model converges rapidly in the first 20 epochs. Both train and validation R² exceed 0.94 and plateau after epoch ~80, confirming stable generalisation with no overfitting.
 
+**R² Score over Epochs**
 ![R² Training Curve](assets/r2_training_curve.png)
+
+**Loss (MSE) over Epochs**
+![Loss over Epochs](assets/loss_over_epochs.png)
 
 ---
 
@@ -77,15 +81,17 @@ Input  →  [Linear(d → 128) → BatchNorm → ReLU]
 
 ---
 
-## Model Parameters Summary
-
-![Summary Table](assets/summary_table.png)
-
----
-
 ## Sample Predictions vs Ground Truth (2021)
 
-![Predictions vs Actual](assets/predictions_vs_actual.png)
+A snapshot of model predictions against true yield values for the 2021 validation year. Predictions are back-transformed from log-space to the original kg/ha scale before comparison.
+
+| Country | Predicted (kg/ha) | Actual (kg/ha) | Residual | Crop |
+|---|---|---|---|---|
+| Algeria | 1997.48 | 1731.30 | -266.18 | Triticale |
+| Algeria | 1829.48 | 1717.00 | +112.48 | Treenuts, Total |
+| Angola | 642.35 | 643.50 | +1.16 | Groundnuts, excl. shelled |
+| Angola | 4714.58 | 4749.80 | +35.22 | Other fruits, n.e.c. |
+| Angola | 744.17 | 710.00 | -34.17 | Sunflower seed |
 
 The `predictions_2022.csv` file in this repo contains model predictions for the **2022 forecast year** alongside true values for all 5,190 country–crop pairs.
 
@@ -217,9 +223,8 @@ crop-yield-forecasting-mlp-pytorch/
 ├── report.pdf                     # Technical report with full methodology
 ├── assets/
 │   ├── r2_training_curve.png      # R² score over 120 training epochs
+│   ├── loss_over_epochs.png       # MSE loss over 120 training epochs
 │   ├── network_architecture.png   # MLP layer diagram
-│   ├── summary_table.png          # Full hyperparameter and data summary
-│   ├── predictions_vs_actual.png  # Sample validation predictions (2021)
 │   └── report_title.png           # Report cover page
 └── LICENSE
 ```
