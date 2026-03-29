@@ -257,7 +257,7 @@ crop-yield-forecasting-mlp-pytorch/
 ## Author
 
 **Ali Najafzadeh**
-AI Graduate | Former Full-Stack Developer
+MSc Artificial Intelligence — University of Sussex
 [GitHub](https://github.com/alinjfz) · [LinkedIn](https://linkedin.com/in/alinajafzadeh)
 
 ---
