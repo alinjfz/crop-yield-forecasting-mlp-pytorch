@@ -13,20 +13,24 @@
 
 ## Results at a Glance
 
-| Metric | Value |
-|---|---|
-| Validation R² | **0.9452** |
-| Validation Pearson r | **0.9681** |
-| Validation RMSE | **3926.49 kg/ha** |
-| Validation MSE | **1.54 × 10⁷** |
-| Training MSE | **9.62 × 10⁶** |
-| Training samples | **52,370** |
-| Validation samples | **10,368** |
-| Prediction samples (2022) | **5,190** |
-| Countries | **165** |
-| Crop types | **102** |
-| Input features (post-encoding) | **43** |
-| Epochs | **120** |
+<p align="center">
+  <img src="assets/model_radar.png" width="420" alt="Model Performance Radar"/>
+</p>
+
+| Metric                         | Value             |
+| ------------------------------ | ----------------- |
+| Validation R²                  | **0.9452**        |
+| Validation Pearson r           | **0.9681**        |
+| Validation RMSE                | **3926.49 kg/ha** |
+| Validation MSE                 | **1.54 × 10⁷**    |
+| Training MSE                   | **9.62 × 10⁶**    |
+| Training samples               | **52,370**        |
+| Validation samples             | **10,368**        |
+| Prediction samples (2022)      | **5,190**         |
+| Countries                      | **165**           |
+| Crop types                     | **102**           |
+| Input features (post-encoding) | **43**            |
+| Epochs                         | **120**           |
 
 ---
 
@@ -66,16 +70,16 @@ Input  →  [Linear(d → 128) → BatchNorm → ReLU]
        →  Predicted Yield (kg/ha)
 ```
 
-| Component | Detail |
-|---|---|
-| Input layer | d-dimensional feature vector (numeric + one-hot) |
-| Hidden layer 1 | Linear → BatchNorm(128) → ReLU |
-| Hidden layer 2 | Linear → BatchNorm(64) → ReLU |
-| Output layer | Linear → scalar (log-yield) |
-| Optimizer | Adam, lr = 0.001 |
-| Loss function | Weighted MSE |
-| Batch size | 64 |
-| Epochs | 120 |
+| Component      | Detail                                           |
+| -------------- | ------------------------------------------------ |
+| Input layer    | d-dimensional feature vector (numeric + one-hot) |
+| Hidden layer 1 | Linear → BatchNorm(128) → ReLU                   |
+| Hidden layer 2 | Linear → BatchNorm(64) → ReLU                    |
+| Output layer   | Linear → scalar (log-yield)                      |
+| Optimizer      | Adam, lr = 0.001                                 |
+| Loss function  | Weighted MSE                                     |
+| Batch size     | 64                                               |
+| Epochs         | 120                                              |
 
 **Why no Dropout?** After extensive experimentation, BatchNorm alone prevented overfitting. Dropout introduced unnecessary variance with no measurable regularisation gain on this dataset.
 
@@ -85,13 +89,13 @@ Input  →  [Linear(d → 128) → BatchNorm → ReLU]
 
 A snapshot of model predictions against true yield values for the 2021 validation year. Predictions are back-transformed from log-space to the original kg/ha scale before comparison.
 
-| Country | Predicted (kg/ha) | Actual (kg/ha) | Residual | Crop |
-|---|---|---|---|---|
-| Algeria | 1997.48 | 1731.30 | -266.18 | Triticale |
-| Algeria | 1829.48 | 1717.00 | +112.48 | Treenuts, Total |
-| Angola | 642.35 | 643.50 | +1.16 | Groundnuts, excl. shelled |
-| Angola | 4714.58 | 4749.80 | +35.22 | Other fruits, n.e.c. |
-| Angola | 744.17 | 710.00 | -34.17 | Sunflower seed |
+| Country | Predicted (kg/ha) | Actual (kg/ha) | Residual | Crop                      |
+| ------- | ----------------- | -------------- | -------- | ------------------------- |
+| Algeria | 1997.48           | 1731.30        | -266.18  | Triticale                 |
+| Algeria | 1829.48           | 1717.00        | +112.48  | Treenuts, Total           |
+| Angola  | 642.35            | 643.50         | +1.16    | Groundnuts, excl. shelled |
+| Angola  | 4714.58           | 4749.80        | +35.22   | Other fruits, n.e.c.      |
+| Angola  | 744.17            | 710.00         | -34.17   | Sunflower seed            |
 
 The `predictions_2022.csv` file in this repo contains model predictions for the **2022 forecast year** alongside true values for all 5,190 country–crop pairs.
 
@@ -103,29 +107,29 @@ The model uses **multi-source earth observation data** merged at the country–y
 
 ### Climate Variables (monthly → annual aggregation)
 
-| Feature Group | Variables | Aggregation |
-|---|---|---|
-| **Soil Moisture** | 0–10 cm, 10–40 cm, 40–100 cm, 100–200 cm | Annual mean |
-| **Soil Temperature** | 4 depths × (mean, min, max) = 12 columns | Annual mean/min/max |
-| **Evaporation (ESoil)** | ESoil_tavg | Annual mean |
-| **Transpiration (TVeg)** | TVeg_tavg | Annual mean |
-| **Canopy Water** | CanopInt | Annual mean |
-| **Terrestrial Water Storage** | TWS anomaly | Annual mean |
-| **Precipitation – Rain** | Rainf_tavg | Annual total (mm) |
-| **Precipitation – Snow** | Snowf_tavg | Annual total (mm) |
-| **Land Cover** | 17 land-use class percentages | Per-country mean |
+| Feature Group                 | Variables                                | Aggregation         |
+| ----------------------------- | ---------------------------------------- | ------------------- |
+| **Soil Moisture**             | 0–10 cm, 10–40 cm, 40–100 cm, 100–200 cm | Annual mean         |
+| **Soil Temperature**          | 4 depths × (mean, min, max) = 12 columns | Annual mean/min/max |
+| **Evaporation (ESoil)**       | ESoil_tavg                               | Annual mean         |
+| **Transpiration (TVeg)**      | TVeg_tavg                                | Annual mean         |
+| **Canopy Water**              | CanopInt                                 | Annual mean         |
+| **Terrestrial Water Storage** | TWS anomaly                              | Annual mean         |
+| **Precipitation – Rain**      | Rainf_tavg                               | Annual total (mm)   |
+| **Precipitation – Snow**      | Snowf_tavg                               | Annual total (mm)   |
+| **Land Cover**                | 17 land-use class percentages            | Per-country mean    |
 
 ### Categorical Variables
 
-| Feature | Detail |
-|---|---|
-| Country | One-hot encoded (165 countries) |
+| Feature   | Detail                           |
+| --------- | -------------------------------- |
+| Country   | One-hot encoded (165 countries)  |
 | Crop Item | One-hot encoded (102 crop types) |
-| Year | Numeric (2010–2022) |
+| Year      | Numeric (2010–2022)              |
 
 ### Target (Label)
 
-> **Yield** (kg/ha) for year *T+1* — features from year *T* are paired with the yield from year *T+1* by decrementing the yield year by 1 before merging.
+> **Yield** (kg/ha) for year _T+1_ — features from year _T_ are paired with the yield from year _T+1_ by decrementing the yield year by 1 before merging.
 
 ---
 
@@ -135,19 +139,19 @@ A production-grade preprocessing pipeline was built entirely from scratch:
 
 ### 1. Missing Value Imputation
 
-| Variable | Strategy |
-|---|---|
-| TWS month 2 & 3 (~14,946 rows) | Weighted linear interpolation: `⅔ × Jan + ⅓ × Apr` |
-| Soil Moisture 100–200cm month 8 | Average of month 7 (July) and month 9 (September) |
-| Country lat/long nulls (7 rows) | Dropped — insufficient coverage data |
+| Variable                        | Strategy                                           |
+| ------------------------------- | -------------------------------------------------- |
+| TWS month 2 & 3 (~14,946 rows)  | Weighted linear interpolation: `⅔ × Jan + ⅓ × Apr` |
+| Soil Moisture 100–200cm month 8 | Average of month 7 (July) and month 9 (September)  |
+| Country lat/long nulls (7 rows) | Dropped — insufficient coverage data               |
 
 ### 2. Unit Conversions
 
-| Variable | From | To | Method |
-|---|---|---|---|
-| Precipitation | kg/m²/s | mm/month | × seconds/month ÷ 1000 |
-| Soil Temperature | Kelvin | °Celsius | − 273.15 |
-| Yield | raw kg/ha | log-scale | log(1 + x) |
+| Variable         | From      | To        | Method                 |
+| ---------------- | --------- | --------- | ---------------------- |
+| Precipitation    | kg/m²/s   | mm/month  | × seconds/month ÷ 1000 |
+| Soil Temperature | Kelvin    | °Celsius  | − 273.15               |
+| Yield            | raw kg/ha | log-scale | log(1 + x)             |
 
 ### 3. Geo-Assignment — Haversine Matching
 
@@ -156,6 +160,7 @@ Each satellite grid point (lat, lon) was assigned to a country using the **Haver
 ### 4. Feature Engineering
 
 Monthly time-series columns were collapsed into annual summaries:
+
 - **Mean** — used for soil moisture, soil temperature, ESoil, TVeg, canopy water, TWS
 - **Sum** — used for precipitation (total annual rainfall/snowfall matters more than rate)
 - **Min + Max** — added for soil temperature to capture seasonal extremes (overwintering stress, heat stress)
@@ -206,6 +211,7 @@ jupyter notebook crop_yield_forecasting.ipynb
 ```
 
 The notebook is structured sequentially:
+
 1. **Preprocessing** — imputation, unit conversion, merging, geo-assignment
 2. **Feature engineering** — annual aggregation, decay weights, train/val split
 3. **Model definition & training** — MLP with BatchNorm, Adam, weighted MSE
@@ -222,6 +228,7 @@ crop-yield-forecasting-mlp-pytorch/
 ├── predictions_2022.csv           # Model output: Country, Item, True_Value, Predicted_Value
 ├── report.pdf                     # Technical report with full methodology
 ├── assets/
+│   ├── model_radar.png            # Performance radar chart
 │   ├── r2_training_curve.png      # R² score over 120 training epochs
 │   ├── loss_over_epochs.png       # MSE loss over 120 training epochs
 │   ├── network_architecture.png   # MLP layer diagram
@@ -233,14 +240,14 @@ crop-yield-forecasting-mlp-pytorch/
 
 ## Tech Stack
 
-| Tool | Role |
-|---|---|
-| **PyTorch** | MLP model definition, custom training loop, weighted loss |
+| Tool             | Role                                                            |
+| ---------------- | --------------------------------------------------------------- |
+| **PyTorch**      | MLP model definition, custom training loop, weighted loss       |
 | **scikit-learn** | ColumnTransformer, StandardScaler, OneHotEncoder, SimpleImputer |
-| **pandas** | Data loading, merging, groupby aggregation |
-| **NumPy** | Haversine distance computation, array operations |
-| **Matplotlib** | Training curve visualisation |
-| **tqdm** | Epoch progress monitoring |
+| **pandas**       | Data loading, merging, groupby aggregation                      |
+| **NumPy**        | Haversine distance computation, array operations                |
+| **Matplotlib**   | Training curve visualisation                                    |
+| **tqdm**         | Epoch progress monitoring                                       |
 
 ---
 
